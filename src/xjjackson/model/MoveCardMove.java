@@ -73,7 +73,7 @@ public class MoveCardMove extends ks.common.model.Move {
 		// VALIDATION:
 		boolean validation = false;
 		
-		if (to.rank() == movingCard.getRank()) {
+		if (to.suit() == movingCard.getSuit()) {
 			validation = true;
 		}
 

@@ -1,5 +1,7 @@
 package xjjackson.controller;
 
+import xjjackson.model.*;
+
 import java.awt.event.MouseEvent;
 
 import ks.common.games.Solitaire;
@@ -44,14 +46,14 @@ public class PileController extends java.awt.event.MouseAdapter {
             Pile p4 = (Pile) theGame.getModelElement ("pile4");
 
             // check to see if we can remove all cards.
-            Move m = new RemoveAllMove (p1, p2, p3, p4);
+           /* Move m = new RemoveAllMove (p1, p2, p3, p4);
             if (m.doMove(theGame)) {
-                // SUCCESS
-                theGame.pushMove (m);
+            	// SUCCESS
+            	theGame.pushMove (m);
 
-                // redraw all piles
-                theGame.refreshWidgets();
-            }
+            	// redraw all piles
+            	theGame.refreshWidgets();
+            }*/
         }
 	}
 	
@@ -78,9 +80,10 @@ public class PileController extends java.awt.event.MouseAdapter {
 		Column toPile = (Column) pileview.getModelElement();
 
 		// Try to make the move
-		Move m = new MoveCardMove (fromPile, theCard, toPile);
+		Move m = new MoveReserveToFoundation (fromPile,  toPile, theCard);
 		if (m.doMove (theGame)) {
 			// SUCCESS
+			System.out.println("HERE");
 			theGame.pushMove (m);
 		} else {
 			// invalid move! Return to the pile from whence it came.

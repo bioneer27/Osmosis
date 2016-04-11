@@ -5,6 +5,8 @@ import ks.common.games.Solitaire;
 import ks.common.model.Deck;
 import ks.common.model.Move;
 import ks.common.model.Pile;
+import ks.common.model.Column;
+import xjjackson.model.*;
 
 /**
  * Controller for the DeckView widgets used in Narcotic.
@@ -16,7 +18,7 @@ import ks.common.model.Pile;
  */
 public class DeckController extends SolitaireReleasedAdapter {
     /** NarcoticDeckController constructor comment. */
-    public DeckController(Solitaire game) {
+    public DeckController(Solitaire game, Deck d, Column wastePile) {
         super(game);
     }
     
@@ -30,14 +32,12 @@ public class DeckController extends SolitaireReleasedAdapter {
 
         // Find the deck from our model
         Deck d = (Deck) theGame.getModelElement("deck");
-        Pile p1 = (Pile) theGame.getModelElement("pile1");
-        Pile p2 = (Pile) theGame.getModelElement("pile2");
-        Pile p3 = (Pile) theGame.getModelElement("pile3");
-        Pile p4 = (Pile) theGame.getModelElement("pile4");
+        Column wp = (Column) theGame.getModelElement("wastePile");
+        
 
         if (!d.empty()) {
-            // Deal four cards
-            Move m = new DealFourMove(d, p1, p2, p3, p4);
+            // Deal three cards
+            Move m = new DealCards(d, wp);
             if (m.doMove(theGame)) {
                 // SUCCESS: have solitaire game store this move
             	theGame.pushMove(m);
@@ -47,14 +47,14 @@ public class DeckController extends SolitaireReleasedAdapter {
             }
         } else {
         	 // Must be a request to reset the deck.
-            Move m = new ResetDeckMove (d, p1, p2, p3, p4);
+           /* Move m = new ResetDeckMove (d, p1, p2, p3, p4);
             if (m.doMove(theGame)) {
                 // SUCCESS
             	theGame.pushMove (m);
 
                 // refresh all widgets that were affected by this move.
             	theGame.refreshWidgets();
-            }
+            }*/
         }
     }
 }

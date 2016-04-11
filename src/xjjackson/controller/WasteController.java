@@ -1,35 +1,39 @@
 package xjjackson.controller;
 
-import java.awt.event.MouseEvent;
+import xjjackson.model.*;
+import xjjackson.view.*;
 
+import java.awt.event.MouseEvent;
 
 import ks.common.games.Solitaire;
 import ks.common.model.Card;
 import ks.common.model.Move;
 import ks.common.model.Pile;
 import ks.common.model.Column;
-import ks.common.view.*;
+import ks.common.view.CardView;
+import ks.common.view.Container;
+import ks.common.view.PileView;
+import ks.common.view.Widget;
 import xjjackson.model.MoveCardMove;
-import xjjackson.model.*;
 
 /**
  * Final Pile controller.
  * 
  * @author George T. Heineman (heineman@cs.wpi.edu)
  */
-public class ColumnController extends java.awt.event.MouseAdapter {
+public class WasteController extends java.awt.event.MouseAdapter {
 	/** The narcotic instance. */
 	protected Solitaire theGame = null;
 
 	/** The PileView widget being controlled. */
-	RowView columnview;
+	FanPileView pileview;
 
-	/** NarcoticDeckController constructor comment. */
-	public ColumnController(Solitaire game, RowView pileview) {
+	/** DeckController constructor comment. */
+	public WasteController(Solitaire game, FanPileView pileview) {
 		super();
 
 		theGame = game;
-		this.columnview = pileview;
+		this.pileview = pileview;
 	}
 
 	/**
@@ -43,14 +47,14 @@ public class ColumnController extends java.awt.event.MouseAdapter {
             Pile p4 = (Pile) theGame.getModelElement ("pile4");
 
             // check to see if we can remove all cards.
-            Move m = new RemoveAllMove (p1, p2, p3, p4);
+           /* Move m = new RemoveAllMove (p1, p2, p3, p4);
             if (m.doMove(theGame)) {
-                // SUCCESS
-                theGame.pushMove (m);
+            	// SUCCESS
+            	theGame.pushMove (m);
 
-                // redraw all piles
-                theGame.refreshWidgets();
-            }
+            	// redraw all piles
+            	theGame.refreshWidgets();
+            }*/
         }
 	}
 	
@@ -70,14 +74,14 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		Card theCard = (Card) cardView.getModelElement();
 
 		/** Recover the From Pile */
-		PileView fromPileView =  (PileView) c.getDragSource();
-		Pile fromPile = (Pile) fromPileView.getModelElement();
+		FanPileView fromPileView = (FanPileView) c.getDragSource();
+		Column fromPile = (Column) fromPileView.getModelElement();
 
 		// Determine the To Pile
-		Column toPile = (Column) columnview.getModelElement();
+		Column toPile = (Column) pileview.getModelElement();
 
 		// Try to make the move
-		Move m = new MoveCardMove (fromPile, theCard, toPile);
+		Move m = new MoveWasteToFoundation (fromPile,  toPile, theCard);
 		if (m.doMove (theGame)) {
 			// SUCCESS
 			theGame.pushMove (m);
@@ -107,7 +111,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 	 */
 	public void mousePressed(java.awt.event.MouseEvent me) {
 		// Ask PileView to retrieve the top card as a CardView Widget
-		CardView cardView = columnview.getCardViewForTopCard(me);
+		CardView cardView = pileview.getCardViewForTopCard(me);
 
 		// no card present!
 		if (cardView == null) { return; }
@@ -115,10 +119,10 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		// Have container track this object now. Record where it came from
 		Container c = theGame.getContainer();
 		c.setActiveDraggingObject (cardView, me);
-		c.setDragSource(columnview);
+		c.setDragSource(pileview);
 
 		// we simply redraw our source pile to avoid flicker,
 		// rather than refreshing all widgets...
-		columnview.redraw();
+		pileview.redraw();
 	}
 }

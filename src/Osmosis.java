@@ -1,6 +1,6 @@
 
 
-
+import xjjackson.controller.*;
 
 import ks.client.gamefactory.GameWindow;
 import ks.common.controller.SolitaireReleasedAdapter;
@@ -75,13 +75,16 @@ public class Osmosis extends Solitaire {
 	protected Pile pile1, pile2, pile3, pile4;
 	
 	protected Column column1, column2, column3, column4;
+	
+	protected Column wastePile;
 
 	/** The view of the deck */
 	protected DeckView deckView;
 
 	/** The columns */
 	protected PileView pileView1, pileView2, pileView3, pileView4;
-	protected ColumnView columnView1, columnView2, columnView3, columnView4;
+	protected RowView rowView1, rowView2, rowView3, rowView4;
+	protected FanPileView fpv;
 
 	/** The display for the score. */
 	protected IntegerView scoreView;
@@ -100,17 +103,18 @@ public class Osmosis extends Solitaire {
 	 */
 	private void initializeController() {
 		// Initialize Controllers for DeckView
-		deckView.setMouseAdapter(new DeckController (this));
+		deckView.setMouseAdapter(new DeckController (this, deck, wastePile));
 		
 		// add trivial controllers for all piles.
 		pileView1.setMouseAdapter(new PileController (this, pileView1));
 		pileView2.setMouseAdapter(new PileController (this, pileView2));
 		pileView3.setMouseAdapter(new PileController (this, pileView3));
 		pileView4.setMouseAdapter(new PileController (this, pileView4));
-		columnView1.setMouseAdapter(new ColumnController (this, columnView1));
-		columnView2.setMouseAdapter(new ColumnController (this, columnView2));
-		columnView3.setMouseAdapter(new ColumnController (this, columnView3));
-		columnView4.setMouseAdapter(new ColumnController (this, columnView4));
+		rowView1.setMouseAdapter(new ColumnController (this, rowView1));
+		rowView2.setMouseAdapter(new ColumnController (this, rowView2));
+		rowView3.setMouseAdapter(new ColumnController (this, rowView3));
+		rowView4.setMouseAdapter(new ColumnController (this, rowView4));
+		fpv.setMouseAdapter(new WasteController ((Solitaire) this, fpv));
 		
 		// to complete the behavior, you must register the default 'released adapter'
 		// with each widget that isn't expecting anything! Note that widgets
@@ -155,6 +159,8 @@ public class Osmosis extends Solitaire {
 		column2 = new Column("column2");
 		column3 = new Column("column3");
 		column4 = new Column("column4");
+		wastePile = new Column("wastePile");
+		
 		// add to our model a set of four piles
 		addModelElement(pile1);
 		addModelElement(pile2);
@@ -164,6 +170,7 @@ public class Osmosis extends Solitaire {
 		addModelElement(column2);
 		addModelElement(column3);
 		addModelElement(column4);
+		addModelElement(wastePile);
 	}
 
 	/**
@@ -178,6 +185,10 @@ public class Osmosis extends Solitaire {
 		deckView.setBounds(20, 400, ci.getWidth(), ci.getHeight());
 		addViewWidget(deckView);
 
+		fpv = new FanPileView(3, wastePile);
+		fpv.setBounds(20, 20, ci.getWidth(), ci.getHeight());
+		addViewWidget(fpv);
+		
 		pileView1 = new PileView(pile1);
 		pileView1.setBounds(40 + ci.getWidth(), 20, ci.getWidth(), ci.getHeight());
 		addViewWidget(pileView1);
@@ -194,21 +205,22 @@ public class Osmosis extends Solitaire {
 		pileView4.setBounds(40 + ci.getWidth(), 320, ci.getWidth(), ci.getHeight());
 		addViewWidget(pileView4);
 		
-		columnView1 = new ColumnView(column1);
-		columnView1.setBounds(80 + 2 * ci.getWidth(), 20, ci.getWidth(), ci.getHeight());
-		addViewWidget(columnView1);
+		rowView1 = new RowView(column1);
+		rowView1.setBounds(80 + 2 * ci.getWidth(), 20, ci.getWidth()*3, ci.getHeight());
+		addViewWidget(rowView1);
 		
-		columnView2 = new ColumnView(column2);
-		columnView2.setBounds(80 + 2 * ci.getWidth(), 120, ci.getWidth(), ci.getHeight());
-		addViewWidget(columnView2);
+		rowView2 = new RowView(column2);
+		rowView2.setBounds(80 + 2 * ci.getWidth(), 120, ci.getWidth()*3, ci.getHeight());
+		addViewWidget(rowView2);
 		
-		columnView3 = new ColumnView(column3);
-		columnView3.setBounds(80 + 2 * ci.getWidth(), 220, ci.getWidth(), ci.getHeight());
-		addViewWidget(columnView3);
+		rowView3 = new RowView(column3);
+		rowView3.setBounds(80 + 2 * ci.getWidth(), 220, ci.getWidth()*3, ci.getHeight());
+		addViewWidget(rowView3);
 		
-		columnView4 = new ColumnView(column4);
-		columnView4.setBounds(80 + 2 * ci.getWidth(), 320, ci.getWidth(), ci.getHeight());
-		addViewWidget(columnView4);
+		rowView4 = new RowView(column4);
+		rowView4.setBounds(80 + 2 * ci.getWidth(), 320, ci.getWidth()*3, ci.getHeight());
+		addViewWidget(rowView4);
+		
 
 		scoreView = new IntegerView(getScore());
 		scoreView.setBounds(100 + 5 * ci.getWidth(), 20, 100, 60);
@@ -235,8 +247,20 @@ public class Osmosis extends Solitaire {
 		// Prepare game AFTER all controllers are set up.
 		// each column gets a card from the deck.
 		pile1.add (deck.get());
+		pile1.add (deck.get());
+		pile1.add (deck.get());
+		pile1.add (deck.get());
+		pile2.add (deck.get());
+		pile2.add (deck.get());
+		pile2.add (deck.get());
 		pile2.add (deck.get());
 		pile3.add (deck.get());
+		pile3.add (deck.get());
+		pile3.add (deck.get());
+		pile3.add (deck.get());
+		pile4.add (deck.get());
+		pile4.add (deck.get());
+		pile4.add (deck.get());
 		pile4.add (deck.get());
 		column1.add (deck.get());
 		column2.add (deck.get());
