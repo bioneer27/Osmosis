@@ -53,7 +53,7 @@ public class MoveWasteToFoundation extends ks.common.model.Move{
 
 	@Override
 	public boolean valid(Solitaire game) {
-boolean validation = false;
+		boolean validation = false;
 		
 		if (to.suit() == drag.getSuit()) {
 			validation = true;

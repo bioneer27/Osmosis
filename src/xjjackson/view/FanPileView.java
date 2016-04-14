@@ -15,7 +15,7 @@ import ks.common.view.*;
  * Creation date: (12/1/01 9:03:44 AM)
  * @author George T. Heineman (heineman@cs.wpi.edu)
  */
-public class FanPileView extends ColumnView {
+public class FanPileView extends RowView {
 	/** Default numbering for FanPileView names. */
 	static private int fanPileViewCounter = 1;
 
@@ -50,6 +50,8 @@ public class FanPileView extends ColumnView {
 		Column col = (Column) getModelElement();
 		int posOfTopCard = col.count();
 		posOfTopCard = posOfTopCard - numCards;
+		System.out.println(posOfTopCard);
+		System.out.println(numCards);
 
 		if (posOfTopCard < 0) return 0;
 		return posOfTopCard;

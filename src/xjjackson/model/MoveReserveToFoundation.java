@@ -32,7 +32,6 @@ public class MoveReserveToFoundation extends ks.common.model.Move{
 
 		// EXECUTE:
 		to.add (drag);
-		System.out.println("HERE");
 		game.updateScore(1);
 		
 		return true;
@@ -53,7 +52,7 @@ public class MoveReserveToFoundation extends ks.common.model.Move{
 
 	@Override
 	public boolean valid(Solitaire game) {
-boolean validation = false;
+		boolean validation = false;
 		
 		if (to.suit() == drag.getSuit()) {
 			validation = true;

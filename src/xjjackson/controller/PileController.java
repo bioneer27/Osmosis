@@ -77,13 +77,14 @@ public class PileController extends java.awt.event.MouseAdapter {
 		Pile fromPile = (Pile) fromPileView.getModelElement();
 
 		// Determine the To Pile
+	
 		Column toPile = (Column) pileview.getModelElement();
+	
 
 		// Try to make the move
 		Move m = new MoveReserveToFoundation (fromPile,  toPile, theCard);
 		if (m.doMove (theGame)) {
 			// SUCCESS
-			System.out.println("HERE");
 			theGame.pushMove (m);
 		} else {
 			// invalid move! Return to the pile from whence it came.

@@ -11,6 +11,8 @@ import ks.launcher.Main;
 import xjjackson.controller.DeckController;
 import xjjackson.controller.PileController;
 import xjjackson.controller.ColumnController;
+import xjjackson.view.*;
+import xjjackson.view.FanPileView;
 
 
 /**
@@ -74,7 +76,12 @@ public class Osmosis extends Solitaire {
 	/** And four Piles  */
 	protected Pile pile1, pile2, pile3, pile4;
 	
-	protected Column column1, column2, column3, column4;
+	protected Column[] columnArray= new Column[4];
+	Column column1 = columnArray[0];
+	Column column2 = columnArray[1];
+	Column column3 = columnArray[2];
+	Column column4 = columnArray[3];
+
 	
 	protected Column wastePile;
 
@@ -114,7 +121,7 @@ public class Osmosis extends Solitaire {
 		rowView2.setMouseAdapter(new ColumnController (this, rowView2));
 		rowView3.setMouseAdapter(new ColumnController (this, rowView3));
 		rowView4.setMouseAdapter(new ColumnController (this, rowView4));
-		fpv.setMouseAdapter(new WasteController ((Solitaire) this, fpv));
+		fpv.setMouseAdapter(new WasteController ( this, fpv));
 		
 		// to complete the behavior, you must register the default 'released adapter'
 		// with each widget that isn't expecting anything! Note that widgets
@@ -186,48 +193,48 @@ public class Osmosis extends Solitaire {
 		addViewWidget(deckView);
 
 		fpv = new FanPileView(3, wastePile);
-		fpv.setBounds(20, 20, ci.getWidth(), ci.getHeight());
+		fpv.setBounds(20 , 20 , ci.getWidth()*2, 2 * ci.getHeight());
 		addViewWidget(fpv);
 		
 		pileView1 = new PileView(pile1);
-		pileView1.setBounds(40 + ci.getWidth(), 20, ci.getWidth(), ci.getHeight());
+		pileView1.setBounds(40 + 2*ci.getWidth(), 20, ci.getWidth(), ci.getHeight());
 		addViewWidget(pileView1);
 
 		pileView2 = new PileView(pile2);
-		pileView2.setBounds(40 + ci.getWidth(), 120, ci.getWidth(), ci.getHeight());
+		pileView2.setBounds(40 + 2*ci.getWidth(), 120, ci.getWidth(), ci.getHeight());
 		addViewWidget(pileView2);
 
 		pileView3 = new PileView(pile3);
-		pileView3.setBounds(40 +  ci.getWidth(), 220, ci.getWidth(), ci.getHeight());
+		pileView3.setBounds(40 +  2*ci.getWidth(), 220, ci.getWidth(), ci.getHeight());
 		addViewWidget(pileView3);
 
 		pileView4 = new PileView(pile4);
-		pileView4.setBounds(40 + ci.getWidth(), 320, ci.getWidth(), ci.getHeight());
+		pileView4.setBounds(40 + 2*ci.getWidth(), 320, ci.getWidth(), ci.getHeight());
 		addViewWidget(pileView4);
 		
 		rowView1 = new RowView(column1);
-		rowView1.setBounds(80 + 2 * ci.getWidth(), 20, ci.getWidth()*3, ci.getHeight());
+		rowView1.setBounds(80 + 3 * ci.getWidth(), 20, ci.getWidth()*5, ci.getHeight());
 		addViewWidget(rowView1);
 		
 		rowView2 = new RowView(column2);
-		rowView2.setBounds(80 + 2 * ci.getWidth(), 120, ci.getWidth()*3, ci.getHeight());
+		rowView2.setBounds(80 + 3 * ci.getWidth(), 120, ci.getWidth()*5, ci.getHeight());
 		addViewWidget(rowView2);
 		
 		rowView3 = new RowView(column3);
-		rowView3.setBounds(80 + 2 * ci.getWidth(), 220, ci.getWidth()*3, ci.getHeight());
+		rowView3.setBounds(80 + 3 * ci.getWidth(), 220, ci.getWidth()*5, ci.getHeight());
 		addViewWidget(rowView3);
 		
 		rowView4 = new RowView(column4);
-		rowView4.setBounds(80 + 2 * ci.getWidth(), 320, ci.getWidth()*3, ci.getHeight());
+		rowView4.setBounds(80 + 3 * ci.getWidth(), 320, ci.getWidth()*5, ci.getHeight());
 		addViewWidget(rowView4);
 		
 
 		scoreView = new IntegerView(getScore());
-		scoreView.setBounds(100 + 5 * ci.getWidth(), 20, 100, 60);
+		scoreView.setBounds(100 + 5 * ci.getWidth(), 450, 100, 60);
 		addViewWidget(scoreView);
 
 		numLeftView = new IntegerView(getNumLeft());
-		numLeftView.setBounds(200 + 5* ci.getWidth(), 20, 100, 60);
+		numLeftView.setBounds(200 + 5* ci.getWidth(), 450, 100, 60);
 		addViewWidget(numLeftView);
 	}
 
@@ -263,12 +270,12 @@ public class Osmosis extends Solitaire {
 		pile4.add (deck.get());
 		pile4.add (deck.get());
 		column1.add (deck.get());
-		column2.add (deck.get());
-		column3.add (deck.get());
-		column4.add (deck.get());
+		
+		
 
 		// we have dealt four cards.
-		updateNumberCardsLeft (-4);	
+		updateNumberCardsLeft (-17);	
+		updateScore(1);
 	}
 	
 	/** Code to launch solitaire variation. */

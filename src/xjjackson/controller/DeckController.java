@@ -46,6 +46,7 @@ public class DeckController extends SolitaireReleasedAdapter {
             	theGame.refreshWidgets();
             }
         } else {
+        	
         	 // Must be a request to reset the deck.
            /* Move m = new ResetDeckMove (d, p1, p2, p3, p4);
             if (m.doMove(theGame)) {

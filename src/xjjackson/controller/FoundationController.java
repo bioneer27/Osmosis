@@ -12,13 +12,7 @@ import ks.common.model.Element;
 import ks.common.view.*;
 import xjjackson.model.MoveCardMove;
 import xjjackson.model.*;
-
-/**
- * Final Pile controller.
- * 
- * @author George T. Heineman (heineman@cs.wpi.edu)
- */
-public class ColumnController extends java.awt.event.MouseAdapter {
+public class FoundationController extends java.awt.event.MouseAdapter {
 	/** The narcotic instance. */
 	protected Solitaire theGame = null;
 
@@ -26,7 +20,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 	RowView columnview;
 
 	/** NarcoticDeckController constructor comment. */
-	public ColumnController(Solitaire game, RowView pileview) {
+	public FoundationController(Solitaire game, RowView pileview) {
 		super();
 
 		theGame = game;
@@ -133,9 +127,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 	 */
 	public void mousePressed(java.awt.event.MouseEvent me) {
 		// Ask PileView to retrieve the top card as a CardView Widget
-		/*You do not need a mouse press in the column controller*/
-		return;
-		/*CardView cardView = columnview.getCardViewForTopCard(me);
+		CardView cardView = columnview.getCardViewForTopCard(me);
 
 		// no card present!
 		if (cardView == null) { return; }
@@ -147,7 +139,7 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 
 		// we simply redraw our source pile to avoid flicker,
 		// rather than refreshing all widgets...
-		columnview.redraw();*/
+		columnview.redraw();
 	}
 	
 	public void StartFoundationFromWasteHelper(Card theCard, CardView cardView, Container c){
@@ -191,10 +183,5 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		
 	}
 	
-	public void dragSourceHelper(Container c){
-		
-		return;
-	}
-	
-	
+
 }
