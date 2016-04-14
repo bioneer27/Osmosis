@@ -60,6 +60,12 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 	 * desired move
 	 */
 	public void mouseReleased(java.awt.event.MouseEvent me) {
+		
+		Column p1 = (Column) theGame.getModelElement ("column1");
+		Column p2 = (Column) theGame.getModelElement ("column2");
+		Column p3 = (Column) theGame.getModelElement ("column3");
+		Column p4 = (Column) theGame.getModelElement ("column4");
+		
 		Column foundation = (Column) columnview.getModelElement();
 		int columnSize = foundation.count();
 		
