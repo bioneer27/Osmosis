@@ -13,12 +13,16 @@ public class StartFoundationFromReserve extends ks.common.model.Move{
 
 	/** The card being moved (if any). */
 	protected Card drag;
+	protected Column[] columnArray;
+	protected int colIndex;
 	
-	public StartFoundationFromReserve(Pile from, Column to, Card drag){
+	public StartFoundationFromReserve(Pile from, Column to, Card drag, Column[] columnArray, int colIndex){
 		super();
 		this.from = from;
 		this.to = to;
 		this.drag = drag;
+		this.columnArray = columnArray;
+		this.colIndex = colIndex;
 	}
 
 	@Override
@@ -44,14 +48,26 @@ public class StartFoundationFromReserve extends ks.common.model.Move{
 
 				// UNDO: move back
 		from.add (to.get());
+		game.updateScore(-1);
 		return true;
 	}
 
 	@Override
 	public boolean valid(Solitaire game) {
+		
+		boolean validFoundation = false;
+		
+		if (!columnArray[colIndex - 1].empty() && columnArray[colIndex].empty()) validFoundation = true;
+		
 		boolean validation = false;
 		
-		if (to.count() == 0) {
+		/*You need to have the base card first to add */
+		int base = columnArray[0].peek(0).getRank();
+		int draggedRank = drag.getRank();
+		
+		boolean validBase = (base == draggedRank);
+		
+		if (to.count() == 0 && validBase && validFoundation) {
 			validation = true;
 		}
 

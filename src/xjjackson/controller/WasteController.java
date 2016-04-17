@@ -14,7 +14,7 @@ import ks.common.view.CardView;
 import ks.common.view.Container;
 import ks.common.view.PileView;
 import ks.common.view.Widget;
-import xjjackson.model.MoveCardMove;
+
 
 /**
  * Final Pile controller.
@@ -40,22 +40,24 @@ public class WasteController extends java.awt.event.MouseAdapter {
 	 * Respond to mouse click events.
 	 */
 	public void mouseClicked(MouseEvent me) {
-        if (me.getClickCount() > 1) {
-            Pile p1 = (Pile) theGame.getModelElement ("pile1");
-            Pile p2 = (Pile) theGame.getModelElement ("pile2");
-            Pile p3 = (Pile) theGame.getModelElement ("pile3");
-            Pile p4 = (Pile) theGame.getModelElement ("pile4");
-
-            // check to see if we can remove all cards.
-           /* Move m = new RemoveAllMove (p1, p2, p3, p4);
-            if (m.doMove(theGame)) {
-            	// SUCCESS
-            	theGame.pushMove (m);
-
-            	// redraw all piles
-            	theGame.refreshWidgets();
-            }*/
-        }
+		
+		return;
+//        if (me.getClickCount() > 1) {
+//            Pile p1 = (Pile) theGame.getModelElement ("pile1");
+//            Pile p2 = (Pile) theGame.getModelElement ("pile2");
+//            Pile p3 = (Pile) theGame.getModelElement ("pile3");
+//            Pile p4 = (Pile) theGame.getModelElement ("pile4");
+//
+//            // check to see if we can remove all cards.
+//           /* Move m = new RemoveAllMove (p1, p2, p3, p4);
+//            if (m.doMove(theGame)) {
+//            	// SUCCESS
+//            	theGame.pushMove (m);
+//
+//            	// redraw all piles
+//            	theGame.refreshWidgets();
+//            }*/
+//        }
 	}
 	
 	/**
@@ -72,23 +74,34 @@ public class WasteController extends java.awt.event.MouseAdapter {
 		/** Must be the CardView widget. */
 		CardView cardView = (CardView) w;
 		Card theCard = (Card) cardView.getModelElement();
-
+		
 		/** Recover the From Pile */
-		FanPileView fromPileView = (FanPileView) c.getDragSource();
-		Column fromPile = (Column) fromPileView.getModelElement();
+		try{
+			
+		
+			FanPileView fromPileView = (FanPileView) c.getDragSource();
+			Column fromPile = (Column) fromPileView.getModelElement();
 
-		// Determine the To Pile
-		Column toPile = (Column) pileview.getModelElement();
+			// Determine the To Pile
+			Column toPile = (Column) pileview.getModelElement();
 
-		// Try to make the move
-		Move m = new MoveWasteToFoundation (fromPile,  toPile, theCard);
-		if (m.doMove (theGame)) {
-			// SUCCESS
-			theGame.pushMove (m);
-		} else {
-			// invalid move! Return to the pile from whence it came.
-			// Rely on the ability of each Widget to support this method.
-			fromPileView.returnWidget (cardView);
+			// Try to make the move
+			Move m = new MoveWasteToFoundation (fromPile,  toPile, theCard);
+			if (m.doMove (theGame)) {
+				// SUCCESS
+				theGame.pushMove (m);
+			} else {
+				// invalid move! Return to the pile from whence it came.
+				// Rely on the ability of each Widget to support this method.
+				fromPileView.returnWidget (cardView);
+			}
+
+
+		}
+		catch(Exception e){
+			PileView fromPileView = (PileView) c.getDragSource();
+			fromPileView.returnWidget(cardView);
+			
 		}
 
 		// Since we could be released over a widget, or over the container, 
@@ -112,7 +125,9 @@ public class WasteController extends java.awt.event.MouseAdapter {
 	public void mousePressed(java.awt.event.MouseEvent me) {
 		// Ask PileView to retrieve the top card as a CardView Widget
 		CardView cardView = pileview.getCardViewForTopCard(me);
-
+		System.out.println("Coordinates");
+		System.out.println(me.getX());
+		System.out.println(me.getY());
 		// no card present!
 		if (cardView == null) { return; }
 		

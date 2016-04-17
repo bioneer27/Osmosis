@@ -1,4 +1,4 @@
-
+package xjjackson;
 
 import xjjackson.controller.*;
 
@@ -74,13 +74,19 @@ public class Osmosis extends Solitaire {
 	protected Deck deck;
 
 	/** And four Piles  */
-	protected Pile pile1, pile2, pile3, pile4;
+	//protected Pile pile1, pile2, pile3, pile4;
 	
 	protected Column[] columnArray= new Column[4];
 	Column column1 = columnArray[0];
 	Column column2 = columnArray[1];
 	Column column3 = columnArray[2];
 	Column column4 = columnArray[3];
+	
+	protected Pile[] pileArray = new Pile[4];
+	Pile pile1 = pileArray[0];
+	Pile pile2 = pileArray[1];
+	Pile pile3 = pileArray[2];
+	Pile pile4 = pileArray[3];
 
 	
 	protected Column wastePile;
@@ -104,7 +110,7 @@ public class Osmosis extends Solitaire {
 //	public String getDeckType() {
 //		return "tiny";
 //	}
-	
+
 	/**
 	 * Prepare the controllers.
 	 */
@@ -215,6 +221,10 @@ public class Osmosis extends Solitaire {
 		rowView1 = new RowView(column1);
 		rowView1.setBounds(80 + 3 * ci.getWidth(), 20, ci.getWidth()*5, ci.getHeight());
 		addViewWidget(rowView1);
+		int width = ci.getWidth();
+		int height = ci.getHeight();
+		System.out.println(width);
+		System.out.println(height);
 		
 		rowView2 = new RowView(column2);
 		rowView2.setBounds(80 + 3 * ci.getWidth(), 120, ci.getWidth()*5, ci.getHeight());
@@ -241,7 +251,7 @@ public class Osmosis extends Solitaire {
 	/** Determine whether game has been won. */
 	public boolean hasWon() {
 		return deck.empty() &&
-			   pile1.empty() && pile2.empty() && pile3.empty() && pile4.empty();
+			   pile1.empty() && pile2.empty() && pile3.empty() && pile4.empty() && wastePile.empty();
 	}
 
 	/** Initialize solitaire variation. */
@@ -281,7 +291,7 @@ public class Osmosis extends Solitaire {
 	/** Code to launch solitaire variation. */
 	public static void main (String []args) {
 		// Seed is to ensure we get the same initial cards every time.
-		GameWindow gw = Main.generateWindow(new Osmosis(), Deck.OrderByRank);
+		GameWindow gw = Main.generateWindow(new Osmosis(), Deck.OrderBySuit);
 		gw.setVisible(true);
 	}
 }

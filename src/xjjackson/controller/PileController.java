@@ -13,7 +13,7 @@ import ks.common.view.CardView;
 import ks.common.view.Container;
 import ks.common.view.PileView;
 import ks.common.view.Widget;
-import xjjackson.model.MoveCardMove;
+
 
 /**
  * Final Pile controller.
@@ -39,11 +39,13 @@ public class PileController extends java.awt.event.MouseAdapter {
 	 * Respond to mouse click events.
 	 */
 	public void mouseClicked(MouseEvent me) {
-        if (me.getClickCount() > 1) {
-            Pile p1 = (Pile) theGame.getModelElement ("pile1");
-            Pile p2 = (Pile) theGame.getModelElement ("pile2");
-            Pile p3 = (Pile) theGame.getModelElement ("pile3");
-            Pile p4 = (Pile) theGame.getModelElement ("pile4");
+		
+		return;
+//        if (me.getClickCount() > 1) {
+//            Pile p1 = (Pile) theGame.getModelElement ("pile1");
+//            Pile p2 = (Pile) theGame.getModelElement ("pile2");
+//            Pile p3 = (Pile) theGame.getModelElement ("pile3");
+//            Pile p4 = (Pile) theGame.getModelElement ("pile4");
 
             // check to see if we can remove all cards.
            /* Move m = new RemoveAllMove (p1, p2, p3, p4);
@@ -54,7 +56,7 @@ public class PileController extends java.awt.event.MouseAdapter {
             	// redraw all piles
             	theGame.refreshWidgets();
             }*/
-        }
+        //}
 	}
 	
 	/**
@@ -73,24 +75,24 @@ public class PileController extends java.awt.event.MouseAdapter {
 		Card theCard = (Card) cardView.getModelElement();
 
 		/** Recover the From Pile */
-		PileView fromPileView = (PileView) c.getDragSource();
-		Pile fromPile = (Pile) fromPileView.getModelElement();
+		//PileView fromPileView = (PileView) c.getDragSource();
+		//Pile fromPile = (Pile) fromPileView.getModelElement();
 
 		// Determine the To Pile
 	
-		Column toPile = (Column) pileview.getModelElement();
+		//Column toPile = (Column) pileview.getModelElement();
 	
 
 		// Try to make the move
-		Move m = new MoveReserveToFoundation (fromPile,  toPile, theCard);
-		if (m.doMove (theGame)) {
-			// SUCCESS
-			theGame.pushMove (m);
-		} else {
+//		Move m = new MoveReserveToFoundation (fromPile,  toPile, theCard);
+//		if (m.doMove (theGame)) {
+//			// SUCCESS
+//			theGame.pushMove (m);
+//		} else {
 			// invalid move! Return to the pile from whence it came.
 			// Rely on the ability of each Widget to support this method.
-			fromPileView.returnWidget (cardView);
-		}
+			c.getDragSource().returnWidget (cardView);
+		//}
 
 		// Since we could be released over a widget, or over the container, 
 		// we must repaintAll() clipped to the region we are concerned about.

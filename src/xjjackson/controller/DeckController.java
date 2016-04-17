@@ -37,7 +37,9 @@ public class DeckController extends SolitaireReleasedAdapter {
 
         if (!d.empty()) {
             // Deal three cards
-            Move m = new DealCards(d, wp);
+        	
+        	
+            Move m = new DealCards(d, wp, d.count());
             if (m.doMove(theGame)) {
                 // SUCCESS: have solitaire game store this move
             	theGame.pushMove(m);
@@ -46,16 +48,18 @@ public class DeckController extends SolitaireReleasedAdapter {
             	theGame.refreshWidgets();
             }
         } else {
-        	
-        	 // Must be a request to reset the deck.
-           /* Move m = new ResetDeckMove (d, p1, p2, p3, p4);
-            if (m.doMove(theGame)) {
-                // SUCCESS
-            	theGame.pushMove (m);
+        	// Reset Deck
+        	if(d.count() == 0){
 
-                // refresh all widgets that were affected by this move.
-            	theGame.refreshWidgets();
-            }*/
+        		Move m = new ResetDeckFromWasteMove(d, wp);
+        		if (m.doMove(theGame)){
+        			theGame.pushMove(m);
+        			theGame.refreshWidgets();
+        			return;
+        		}
+        	}
+        	
+        	
         }
     }
 }

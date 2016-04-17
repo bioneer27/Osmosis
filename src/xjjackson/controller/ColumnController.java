@@ -10,7 +10,7 @@ import ks.common.model.Pile;
 import ks.common.model.Column;
 import ks.common.model.Element;
 import ks.common.view.*;
-import xjjackson.model.MoveCardMove;
+
 import xjjackson.model.*;
 
 /**
@@ -37,22 +37,23 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 	 * Respond to mouse click events.
 	 */
 	public void mouseClicked(MouseEvent me) {
-        if (me.getClickCount() > 1) {
-            Pile p1 = (Pile) theGame.getModelElement ("pile1");
-            Pile p2 = (Pile) theGame.getModelElement ("pile2");
-            Pile p3 = (Pile) theGame.getModelElement ("pile3");
-            Pile p4 = (Pile) theGame.getModelElement ("pile4");
-
-            // check to see if we can remove all cards.
-            Move m = null;// new RemoveAllMove (p1, p2, p3, p4);
-            if (m.doMove(theGame)) {
-                // SUCCESS
-                theGame.pushMove (m);
-
-                // redraw all piles
-                theGame.refreshWidgets();
-            }
-        }
+		return;
+//        if (me.getClickCount() > 1) {
+//            Pile p1 = (Pile) theGame.getModelElement ("pile1");
+//            Pile p2 = (Pile) theGame.getModelElement ("pile2");
+//            Pile p3 = (Pile) theGame.getModelElement ("pile3");
+//            Pile p4 = (Pile) theGame.getModelElement ("pile4");
+//
+//            // check to see if we can remove all cards.
+//            Move m = null;// new RemoveAllMove (p1, p2, p3, p4);
+//            if (m.doMove(theGame)) {
+//                // SUCCESS
+//                theGame.pushMove (m);
+//
+//                // redraw all piles
+//                theGame.refreshWidgets();
+//            }
+//        }
 	}
 	
 	/**
@@ -65,14 +66,15 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		Column p2 = (Column) theGame.getModelElement ("column2");
 		Column p3 = (Column) theGame.getModelElement ("column3");
 		Column p4 = (Column) theGame.getModelElement ("column4");
+		Column[] columnArray= new Column[4];
+		columnArray[0] = p1;
+		columnArray[1] = p2;
+		columnArray[2] = p3;
+		columnArray[3] = p4;
 		
 		Column foundation = (Column) columnview.getModelElement();
 		int columnSize = foundation.count();
 		
-		
-
-		System.out.println("The column size is ");
-		System.out.println(columnSize);
 		
 		Container c = theGame.getContainer();
 
@@ -87,7 +89,8 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		/** Recover the From Pile */
 		
 		if (columnSize == 0){
-			StartFoundationFromWasteHelper(theCard, cardView, c);
+
+			StartFoundationFromWasteHelper(theCard, cardView, c, columnArray);
 			return;
 			
 		}
@@ -99,15 +102,19 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 
 		// Determine the To Pile
 		Column toPile = (Column) columnview.getModelElement();
+		
+		int colIndex = moveValidatorHelper(toPile, columnArray);
 
 		// Try to make the move
 		Move m;
 		try {
-
-			m = new MoveReserveToFoundation ((Pile)fromPile, toPile, theCard);
+		
+			m = new MoveReserveToFoundation ((Pile)fromPile, toPile, theCard, columnArray, colIndex);
 		} catch(Exception e) {
+			/*You need this card to move, move to valid for move*/
 
-			m = new MoveWasteToFoundation((Column)fromPile, toPile, theCard);
+
+			m = new MoveWasteToFoundation((Column)fromPile, toPile, theCard, columnArray, colIndex);
 		}
 		if (m.doMove (theGame)) {
 			// SUCCESS
@@ -156,7 +163,9 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		columnview.redraw();*/
 	}
 	
-	public void StartFoundationFromWasteHelper(Card theCard, CardView cardView, Container c){
+	private void StartFoundationFromWasteHelper(Card theCard, CardView cardView, Container c, Column[] columnArray){
+		
+		
 		Widget fromPileView = c.getDragSource();
 		
 		Element fromPile =  fromPileView.getModelElement();
@@ -164,15 +173,17 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 
 		// Determine the To Pile
 		Column toPile = (Column) columnview.getModelElement();
+		
+		int colIndex = moveValidatorHelper(toPile, columnArray);
 
-		// Try to make the move
+		// Try to make the moves
 		Move m;
 		try {
 
-			m = new StartFoundationFromReserve ((Pile)fromPile, toPile, theCard);
+			m = new StartFoundationFromReserve ((Pile)fromPile, toPile, theCard, columnArray, colIndex);
 		} catch(Exception e) {
 
-			m = new StartFoundationFromWaste((Column)fromPile, toPile, theCard);
+			m = new StartFoundationFromWaste((Column)fromPile, toPile, theCard, columnArray, colIndex);
 		}
 		if (m.doMove (theGame)) {
 			// SUCCESS
@@ -197,9 +208,16 @@ public class ColumnController extends java.awt.event.MouseAdapter {
 		
 	}
 	
-	public void dragSourceHelper(Container c){
-		
-		return;
+
+	
+	private int moveValidatorHelper(Column foundation, Column[] columnArray){
+		int foundationNumber = 0;
+		int i;
+		for (i = 0; i < 4; i++){
+			if (foundation == columnArray[i])
+				foundationNumber = i;
+		}
+		return foundationNumber;
 	}
 	
 	
