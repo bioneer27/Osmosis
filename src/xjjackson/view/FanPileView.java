@@ -50,8 +50,7 @@ public class FanPileView extends RowView {
 		Column col = (Column) getModelElement();
 		int posOfTopCard = col.count();
 		posOfTopCard = posOfTopCard - numCards;
-		System.out.println(posOfTopCard);
-		System.out.println(numCards);
+
 
 		if (posOfTopCard < 0) return 0;
 		return posOfTopCard;

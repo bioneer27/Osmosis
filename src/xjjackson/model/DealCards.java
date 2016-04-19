@@ -73,7 +73,7 @@ public boolean doMove (ks.common.games.Solitaire game) {
 	/*
 	if (cards >= 3){
 		
-		System.out.println("YES");
+
 	// EXECUTE:
 	// Get card from deck
 		wastePile.add (deck.get());

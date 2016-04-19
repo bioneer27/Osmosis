@@ -1,22 +1,7 @@
-Mouse Release on reserve piles
-Click through deck restart?
-
-*Only allow mouse clicks on wastePile if there are no more available moves from reserves
-
-Undo Deal Cards? Yes/No?
-	One at a time?
-	Weird case where you can't go back anymore
-Make sure that you can only add to the next foundation.  Not any foundation
-
-Should the Piles only show after all four?
 
 
+***Available checker causes weird errors;
+	Does it need to be updated?  Why?
 
 
-***Release on wastePile isn't handled
-***Clicking on wastePIle shouldn't increment
-Can only do available moves
-
-Undo deal returns three cards to deck
-
-
+Deal handle time

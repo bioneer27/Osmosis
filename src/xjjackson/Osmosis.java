@@ -221,10 +221,7 @@ public class Osmosis extends Solitaire {
 		rowView1 = new RowView(column1);
 		rowView1.setBounds(80 + 3 * ci.getWidth(), 20, ci.getWidth()*5, ci.getHeight());
 		addViewWidget(rowView1);
-		int width = ci.getWidth();
-		int height = ci.getHeight();
-		System.out.println(width);
-		System.out.println(height);
+
 		
 		rowView2 = new RowView(column2);
 		rowView2.setBounds(80 + 3 * ci.getWidth(), 120, ci.getWidth()*5, ci.getHeight());

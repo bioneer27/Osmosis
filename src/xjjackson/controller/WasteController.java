@@ -40,7 +40,7 @@ public class WasteController extends java.awt.event.MouseAdapter {
 	 * Respond to mouse click events.
 	 */
 	public void mouseClicked(MouseEvent me) {
-		
+
 		return;
 //        if (me.getClickCount() > 1) {
 //            Pile p1 = (Pile) theGame.getModelElement ("pile1");
@@ -86,8 +86,11 @@ public class WasteController extends java.awt.event.MouseAdapter {
 			Column toPile = (Column) pileview.getModelElement();
 
 			// Try to make the move
+			
 			Move m = new MoveWasteToFoundation (fromPile,  toPile, theCard);
+
 			if (m.doMove (theGame)) {
+				
 				// SUCCESS
 				theGame.pushMove (m);
 			} else {
@@ -99,10 +102,19 @@ public class WasteController extends java.awt.event.MouseAdapter {
 
 		}
 		catch(Exception e){
+			
+			try{
 			PileView fromPileView = (PileView) c.getDragSource();
 			fromPileView.returnWidget(cardView);
+			}
+			
+			catch(Exception ex){
+				/*Nothing happened, just return*/
+				return;
+			}
 			
 		}
+
 
 		// Since we could be released over a widget, or over the container, 
 		// we must repaintAll() clipped to the region we are concerned about.
@@ -123,11 +135,41 @@ public class WasteController extends java.awt.event.MouseAdapter {
 	 * @param me     low-level mouse event
 	 */
 	public void mousePressed(java.awt.event.MouseEvent me) {
+		return;
+		/*
+		Pile p1 = (Pile) theGame.getModelElement ("pile1");
+		Pile p2 = (Pile) theGame.getModelElement ("pile2");
+		Pile p3 = (Pile) theGame.getModelElement ("pile3");
+		Pile p4 = (Pile) theGame.getModelElement ("pile4");
+		Pile[] piles = new Pile[4];
+		piles[0] = p1;
+		piles[1] = p2;
+		piles[2] = p3;
+		piles[3] = p4;
+		
+		
+		Column c1 = (Column) theGame.getModelElement ("column1");
+		Column c2 = (Column) theGame.getModelElement ("column2");
+		Column c3 = (Column) theGame.getModelElement ("column3");
+		Column c4 = (Column) theGame.getModelElement ("column4");
+		Column[] columns = new Column[4];
+		columns[0] = c1;
+		columns[1] = c2;
+		columns[2] = c3;
+		columns[3] = c4;
+		
+		if (availableMoveChecker(piles, columns)){
+
+			
+			return;
+		}
+		
+		
+
+		
 		// Ask PileView to retrieve the top card as a CardView Widget
 		CardView cardView = pileview.getCardViewForTopCard(me);
-		System.out.println("Coordinates");
-		System.out.println(me.getX());
-		System.out.println(me.getY());
+		
 		// no card present!
 		if (cardView == null) { return; }
 		
@@ -138,6 +180,37 @@ public class WasteController extends java.awt.event.MouseAdapter {
 
 		// we simply redraw our source pile to avoid flicker,
 		// rather than refreshing all widgets...
-		pileview.redraw();
+		pileview.redraw();*/
 	}
+	
+	private boolean availableMoveChecker(Pile[] piles, Column[] columns){
+		
+		int i, j;
+		
+		for (i = 0; i < 4; i++){
+			Pile pile;
+			if (piles[i].get() != null){
+				pile = piles[i];				
+			}
+			else continue;
+
+			for (j = 0; j < 4; j++){
+				Move m;
+				Column col = columns[j];
+				if (col.count() == 0) {
+					m = new StartFoundationFromReserve(pile, col, pile.get(), columns, j);
+				}
+				else{
+					m = new MoveReserveToFoundation(pile, col, pile.get(), columns, j);
+				}
+				if (pile.get() == null) continue;
+				if (m.doMove(theGame)) return true;
+
+				
+			}
+		}
+		return false;
+	}
+	
+	
 }

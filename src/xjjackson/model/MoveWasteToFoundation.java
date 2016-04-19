@@ -25,7 +25,7 @@ public class MoveWasteToFoundation extends ks.common.model.Move{
 		this.to = to;
 		this.drag = drag;
 		this.columnArray = null;
-		this.colIndex = 0;
+		this.colIndex = 1;
 	}
 	
 	public MoveWasteToFoundation(Column from, Column to, Card drag, Column[] columnArray, int colIndex){
@@ -49,7 +49,8 @@ public class MoveWasteToFoundation extends ks.common.model.Move{
 		to.add (drag);
 
 		game.updateScore(1);
-		
+
+
 		return true;
 	}
 
